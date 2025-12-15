@@ -10,6 +10,7 @@ download_test:
 	( if [ ! -d $(THISDIR)/$(SRC_NAME) ]; then \
 		git clone https://github.com/rozhuk-im/msd_lite.git ; \
 		cd $(SRC_NAME) ; \
+		git checkout db58338 ; \
 		git submodule update --init --recursive ; \
 		patch -p1 -i ../msd_lite.diff ; \
 		cd src/liblcb ; \
