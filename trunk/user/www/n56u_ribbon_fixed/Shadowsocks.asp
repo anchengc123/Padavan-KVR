@@ -1227,6 +1227,7 @@
 				document.getElementById('v2_transport').dispatchEvent(event);
 
 				if (queryParam.security == "reality") {
+					document.getElementById('v2_tls').value = '1';
 					if (queryParam.flow != undefined) {
 						if (queryParam.flow == 'xtls-rprx-vision') {
 							document.getElementById('v2_flow').value = '1';
@@ -1239,7 +1240,7 @@
 					else {
 						document.getElementById('v2_flow').value = '0';
 					}
-				}
+				
 					//document.getElementById('v2_tls').checked = true;
 					document.getElementById('ssp_insecure').value = 0;
 					document.getElementById('ssp_insecure').checked = false;
@@ -1273,7 +1274,7 @@
 					else {
 						document.getElementById('v2_flow').value = '0';
 					}
-				}
+				
 					//document.getElementById('v2_tls').checked = true;
 					document.getElementById('ssp_insecure').value = 0;
 					document.getElementById('ssp_insecure').checked = false;
