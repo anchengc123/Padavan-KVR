@@ -1197,9 +1197,19 @@
 				document.getElementById('v2_transport').value = queryParam.type || "tcp";
 				document.getElementById('v2_transport').dispatchEvent(event);
 
-				if (queryParam.security == "tls") {
-					document.getElementById('v2_tls').value = '1';
-					document.getElementById('v2_flow').value = '0';
+				if (queryParam.security == "reality") {
+					if (queryParam.flow != undefined) {
+						if (queryParam.flow == 'xtls-rprx-vision') {
+							document.getElementById('v2_flow').value = '1';
+						}
+						else {
+							document.getElementById('v2_flow').value = '0';
+						}
+
+					}
+					else {
+						document.getElementById('v2_flow').value = '0';
+					}
 					//document.getElementById('v2_tls').checked = true;
 					document.getElementById('ssp_insecure').value = 0;
 					document.getElementById('ssp_insecure').checked = false;
@@ -1215,14 +1225,11 @@
 					document.getElementById('v2_h2_path').value = queryParam.path;
 				}
 
-				if (queryParam.security == "xtls") {
+				if (queryParam.security == "tls") {
 					document.getElementById('v2_tls').value = '2';
 					if (queryParam.flow != undefined) {
-						if (queryParam.flow == 'xtls-rprx-direct') {
+						if (queryParam.flow == 'xtls-rprx-vision') {
 							document.getElementById('v2_flow').value = '1';
-						}
-						else if (queryParam.flow == 'xtls-rprx-splice') {
-							document.getElementById('v2_flow').value = '2';
 						}
 						else {
 							document.getElementById('v2_flow').value = '0';
@@ -1230,7 +1237,7 @@
 
 					}
 					else {
-						document.getElementById('v2_flow').value = '1';
+						document.getElementById('v2_flow').value = '0';
 					}
 					//document.getElementById('v2_tls').checked = true;
 					document.getElementById('ssp_insecure').value = 0;
@@ -2353,13 +2360,13 @@
 															</td>
 														</tr>
 														<tr id="row_v2_tls" style="display:none;">
-															<th>TLS/XTLS</th>
+															<th width="50%">安全</th>
 															<td>
 																<select name="v2_tls" id="v2_tls" class="input"
 																	style="width: 200px;">
 																	<option value="0">未配置</option>
-																	<option value="1">tls</option>
-																	<option value="2">xtls</option>
+																	<option value="1">reality</option>
+																	<option value="2">tls</option>
 																</select>
 
 															</td>
@@ -2370,14 +2377,13 @@
 																<select name="v2_flow" id="v2_flow" class="input"
 																	style="width: 200px;">
 																	<option value="0">未配置</option>
-																	<option value="1">xtls-rprx-direct</option>
-																	<option value="2">xtls-rprx-splice</option>
+																	<option value="1">xtls-rprx-vision</option>
 																</select>
 
 															</td>
 														</tr>
 														<tr id="row_tj_tls_host" style="display:none;">
-															<th>TLS/XTLS Host</th>
+															<th>serverName</th>
 															<td>
 																<input type="text" class="input" size="15"
 																	name="ssp_tls_host" id="ssp_tls_host"
