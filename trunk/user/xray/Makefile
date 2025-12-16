@@ -60,6 +60,6 @@ romfs:
 	$(ROMFSINST) -p +x $(THISDIR)/bin/xray /usr/bin/v2ray
 	# 复制到 images 目录以便上传
 	if [ -d /opt/images ]; then \
-		cp -f /usr/bin/xray /opt/images/xray; \
+		cp -f /usr/bin/v2ray /opt/images/xray; \
 		echo "Xray binary copied to /opt/images/"; \
 	fi
