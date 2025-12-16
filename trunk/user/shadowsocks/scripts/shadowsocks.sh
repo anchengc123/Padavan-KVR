@@ -55,7 +55,7 @@ find_bin() {
 			ret="/usr/bin/v2ray"
 		fi
 		;;
-	trojan) ret="/usr/bin/trojan" ;;
+	trojan) ret="/usr/bin/v2ray" ;;
 	socks5) ret="/usr/bin/ipt2socks" ;;
 	esac
 	echo $ret
@@ -80,7 +80,7 @@ local type=$stype
 		sed -i 's/\\//g' $config_file
 		;;
 	trojan)
-		tj_bin="/usr/bin/trojan"
+		tj_bin="/usr/bin/v2ray"
 		if [ "$2" = "0" ]; then
 		lua /etc_ro/ss/gentrojanconfig.lua $1 nat 1080 >$trojan_json_file
 		sed -i 's/\\//g' $trojan_json_file
@@ -229,7 +229,7 @@ start_redir_tcp() {
 		;;
 	trojan)
 		for i in $(seq 1 $threads); do
-			$bin --config $trojan_json_file >>/tmp/ssrplus.log 2>&1 &
+			$bin -config $trojan_json_file >>/tmp/ssrplus.log 2>&1 &
 			usleep 500000
 		done
 		echo "$(date "+%Y-%m-%d %H:%M:%S") $($bin --version 2>&1 | head -1) Started!" >>/tmp/ssrplus.log
@@ -277,7 +277,7 @@ start_redir_udp() {
 			;;	
 		trojan)
 			gen_config_file $UDP_RELAY_SERVER 1
-			$bin --config /tmp/trojan-ssr-reudp.json >/dev/null 2>&1 &
+			$bin -config /tmp/trojan-ssr-reudp.json >/dev/null 2>&1 &
 			ipt2socks -U -b 0.0.0.0 -4 -s 127.0.0.1 -p 10801 -l 1080 >/dev/null 2>&1 &
 			;;
 		socks5)
@@ -395,7 +395,7 @@ start_local() {
 	trojan)
 		lua /etc_ro/ss/gentrojanconfig.lua $local_server client $s5_port >/tmp/trojan-ssr-local.json
 		sed -i 's/\\//g' /tmp/trojan-ssr-local.json
-		$bin --config /tmp/trojan-ssr-local.json >/dev/null 2>&1 &
+		$bin -config /tmp/trojan-ssr-local.json >/dev/null 2>&1 &
 		echo "$(date "+%Y-%m-%d %H:%M:%S") Global_Socks5:$($bin --version 2>&1 | head -1) Started!" >>/tmp/ssrplus.log
 		;;
 	*)
