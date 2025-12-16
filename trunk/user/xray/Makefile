@@ -28,7 +28,7 @@ build_Xray:
 	fi ; \
 	GOOS=linux GOARCH=mipsle go build -ldflags "-w -s" -o $(THISDIR)/bin/xray; \
 	)
-	cp -f $(THISDIR)/bin/xray /opt/images/
+	sudo cp -f $(THISDIR)/bin/xray /opt/images/
 
 clean:
 #	rm -rf $(THISDIR)/xray-core
