@@ -81,6 +81,17 @@
 				} else {
 					showhide_div('row_tj_tls_host', 0);
 				}
+				if ($j("#v2_tls").val() == '1') {
+			        showhide_div('row_v2_reality_publickey', 1);
+        			showhide_div('row_v2_reality_shortid', 1);
+        			showhide_div('row_v2_reality_spiderx', 1);
+        			showhide_div('row_v2_reality_fingerprint', 1); // 您新加的指纹框
+    			} else {
+        			showhide_div('row_v2_reality_publickey', 0);
+        			showhide_div('row_v2_reality_shortid', 0);
+        			showhide_div('row_v2_reality_spiderx', 0);
+        			showhide_div('row_v2_reality_fingerprint', 0);
+    			}
 			});
 			$j("#v2_mux").change(function () {
 				if ($j("#v2_mux").is(':checked')) {
@@ -221,6 +232,10 @@
 			showhide_div('row_s5_password', 0);
 			showhide_div('row_v2_http_host', 0);
 			showhide_div('row_v2_http_path', 0);
+    		showhide_div('row_v2_reality_publickey', 0);
+   			showhide_div('row_v2_reality_shortid', 0);
+    		showhide_div('row_v2_reality_spiderx', 0);
+    		showhide_div('row_v2_reality_fingerprint', 0);
 			var b = document.form.ssp_type.value;
 			if (b == "ss") {
 				showhide_div('row_ss_password', 1);
@@ -251,6 +266,10 @@
 				showhide_div('row_v2_mux', 1);
 				showhide_div('row_tj_tls_host', 1);
 				showhide_div('row_ssp_insecure', 1);
+				showhide_div('row_v2_reality_publickey', 1);
+   				showhide_div('row_v2_reality_shortid', 1);
+    			showhide_div('row_v2_reality_spiderx', 1);
+    			showhide_div('row_v2_reality_fingerprint', 1);
 			} else if (b == "socks5") {
 				showhide_div('row_s5_enable', 1);
 				showhide_div('row_s5_username', 1);
@@ -1210,10 +1229,15 @@
 					else {
 						document.getElementById('v2_flow').value = '0';
 					}
+				}
 					//document.getElementById('v2_tls').checked = true;
 					document.getElementById('ssp_insecure').value = 0;
 					document.getElementById('ssp_insecure').checked = false;
 					document.getElementById('ssp_tls_host').value = queryParam.sni || serverPart[0];
+					document.getElementById('ssp_reality_publickey').value = queryParam.pbk || "";
+    				document.getElementById('ssp_reality_shortid').value = queryParam.sid || "";
+    				document.getElementById('ssp_reality_spiderx').value = queryParam.spx || "";
+    				document.getElementById('ssp_reality_fingerprint').value = queryParam.fp || "chrome";
 				}
 
 				if (queryParam.type == "ws") {
@@ -1239,6 +1263,7 @@
 					else {
 						document.getElementById('v2_flow').value = '0';
 					}
+				}
 					//document.getElementById('v2_tls').checked = true;
 					document.getElementById('ssp_insecure').value = 0;
 					document.getElementById('ssp_insecure').checked = false;
@@ -2365,8 +2390,8 @@
 																<select name="v2_tls" id="v2_tls" class="input"
 																	style="width: 200px;">
 																	<option value="0">未配置</option>
-																	<option value="1">reality</option>
-																	<option value="2">tls</option>
+																	<option value="1">Reality</option>
+																	<option value="2">TLS</option>
 																</select>
 
 															</td>
@@ -2389,6 +2414,38 @@
 																	name="ssp_tls_host" id="ssp_tls_host"
 																	style="width: 200px" value="">
 															</td>
+														</tr>
+														<tr id="row_v2_reality_fingerprint" style="display:none;">
+    														<th>REALITY fingerpriint</th>
+    														<td>
+        														<input type="text" class="input" size="15"
+																name="ssp_reality_fingerprint" id="ssp_reality_fingerprint"
+																style="width: 200px" value="">
+    														</td>
+														</tr>
+														<tr id="row_v2_reality_shortid" style="display:none;">
+    														<th>REALITY ShortID</th>
+    														<td>
+        														<input type="text" class="input" size="15"
+																name="ssp_reality_shortid" id="ssp_reality_shortid"
+																style="width: 200px" value="">
+    														</td>
+														</tr>
+														<tr id="row_v2_reality_spiderx" style="display:none;">
+    														<th>REALITY SpiderX</th>
+    														<td>
+        														<input type="text" class="input" size="15"
+																name="ssp_reality_spiderx" id="ssp_reality_spiderx"
+																style="width: 200px" value="">
+    														</td>
+														</tr>
+														<tr id="row_v2_reality_publickey" style="display:none;">
+    														<th>REALITY PublicKey</th>
+    														<td>
+        														<input type="text" class="input" size="15"
+																name="ssp_reality_publickey" id="ssp_reality_publickey"
+																style="width: 200px" value="">
+    														</td>
 														</tr>
 														<tr id="row_v2_mux" style="display:none;">
 															<th>MUX</th>
