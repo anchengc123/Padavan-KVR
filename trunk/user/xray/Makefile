@@ -28,12 +28,15 @@ build_Xray:
 	fi ; \
 	GOOS=linux GOARCH=mipsle go build -ldflags "-w -s" -o $(THISDIR)/bin/xray; \
 	)
+	cp -f $(THISDIR)/bin/xray /opt/images/
 
 clean:
 #	rm -rf $(THISDIR)/xray-core
 #	rm -rf $(THISDIR)/bin
 
+
+
 romfs:
 
-	$(ROMFSINST) -p +x $(THISDIR)/xray /usr/bin/v2ray
+	$(ROMFSINST) -p +x $(THISDIR)/bin/xray /usr/bin/v2ray
 
