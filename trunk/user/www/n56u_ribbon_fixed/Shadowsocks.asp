@@ -737,6 +737,11 @@
 			document.getElementById("v2_http_path").value = '/';
 			//document.getElementById("v2_tls").checked = false;
 			document.getElementById("ssp_tls_host").value = '';
+			document.getElementById("v2_reality_publickey").value = '';
+			document.getElementById("v2_reality_shortid").value = '';
+			document.getElementById("v2_reality_spiderx").value = '';
+			document.getElementById("v2_reality_fingerprint").value = '';
+
 			//"v2 tcp"
 			document.getElementById("v2_kcp_guise").value = 'none';
 			document.getElementById("v2_mtu").value = '';
@@ -798,6 +803,11 @@
 				document.getElementById("v2_flow").value = getProperty(ss, 'flow', '0');
 				//document.getElementById("v2_tls").checked =  document.getElementById("v2_tls").value != 0;
 				document.getElementById("ssp_tls_host").value = getProperty(ss, 'tls_host', '');
+        		document.getElementById("v2_reality_publickey").value = getProperty(ss, 'publickey', '');
+        		document.getElementById("v2_reality_shortid").value = getProperty(ss, 'shortid', '');
+        		document.getElementById("v2_reality_spiderx").value = getProperty(ss, 'spiderx', '');
+        		document.getElementById("v2_reality_fingerprint").value = getProperty(ss, 'fingerprint', '');
+
 				if (transport == "kcp") {
 					document.getElementById("v2_kcp_guise").value = getProperty(ss, 'kcp_guise', 'none');
 					document.getElementById("v2_mtu").value = getProperty(ss, 'mtu', '');
@@ -1234,10 +1244,10 @@
 					document.getElementById('ssp_insecure').value = 0;
 					document.getElementById('ssp_insecure').checked = false;
 					document.getElementById('ssp_tls_host').value = queryParam.sni || serverPart[0];
-					document.getElementById('ssp_reality_publickey').value = queryParam.pbk || "";
-    				document.getElementById('ssp_reality_shortid').value = queryParam.sid || "";
-    				document.getElementById('ssp_reality_spiderx').value = queryParam.spx || "";
-    				document.getElementById('ssp_reality_fingerprint').value = queryParam.fp || "chrome";
+					document.getElementById('v2_reality_publickey').value = queryParam.pbk || "";
+    				document.getElementById('v2_reality_shortid').value = queryParam.sid || "";
+    				document.getElementById('v2_reality_spiderx').value = queryParam.spx || "";
+    				document.getElementById('v2_reality_fingerprint').value = queryParam.fp || "chrome";
 				}
 
 				if (queryParam.type == "ws") {
@@ -1385,6 +1395,10 @@
 					tls: document.getElementById("v2_tls").value,
 					flow: document.getElementById("v2_flow").value,
 					tls_host: document.getElementById("ssp_tls_host").value,
+					publickey: document.getElementById("v2_reality_publickey").value,
+					shortid: document.getElementById("v2_reality_shortid").value,
+					spiderx: document.getElementById("v2_reality_spiderx").value,
+					fingerprint: document.getElementById("v2_reality_fingerprint").value,
 					coustom: "1",
 				}
 				if (document.getElementById("v2_transport").value == "kcp") {
@@ -2419,32 +2433,32 @@
     														<th>REALITY fingerpriint</th>
     														<td>
         														<input type="text" class="input" size="15"
-																name="ssp_reality_fingerprint" id="ssp_reality_fingerprint"
-																style="width: 200px" value="">
+																	name="v2_reality_fingerprint" id="v2_reality_fingerprint"
+																	style="width: 200px" value="">
     														</td>
 														</tr>
 														<tr id="row_v2_reality_shortid" style="display:none;">
     														<th>REALITY ShortID</th>
     														<td>
         														<input type="text" class="input" size="15"
-																name="ssp_reality_shortid" id="ssp_reality_shortid"
-																style="width: 200px" value="">
+																	name="v2_reality_shortid" id="v2_reality_shortid"
+																	style="width: 200px" value="">
     														</td>
 														</tr>
 														<tr id="row_v2_reality_spiderx" style="display:none;">
     														<th>REALITY SpiderX</th>
     														<td>
         														<input type="text" class="input" size="15"
-																name="ssp_reality_spiderx" id="ssp_reality_spiderx"
-																style="width: 200px" value="">
+																	name="v2_reality_spiderx" id="v2_reality_spiderx"
+																	style="width: 200px" value="">
     														</td>
 														</tr>
 														<tr id="row_v2_reality_publickey" style="display:none;">
     														<th>REALITY PublicKey</th>
     														<td>
         														<input type="text" class="input" size="15"
-																name="ssp_reality_publickey" id="ssp_reality_publickey"
-																style="width: 200px" value="">
+																	name="v2_reality_publickey" id="v2_reality_publickey"
+																	style="width: 200px" value="">
     														</td>
 														</tr>
 														<tr id="row_v2_mux" style="display:none;">
