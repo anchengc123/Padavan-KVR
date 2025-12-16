@@ -50,11 +50,6 @@ build_Xray:
 	echo "Compiling using: $($(MY_GO) version)" ; \
 	GOOS=linux GOARCH=mipsle $(MY_GO) build -ldflags "-w -s" -o $(THISDIR)/bin/xray; \
 	)
-	# 复制到 images 目录以便上传
-	if [ -d /opt/images ]; then \
-		cp -f $(THISDIR)/bin/xray /opt/images/xray-linux-mipsle; \
-		echo "Xray binary copied to /opt/images/"; \
-	fi
 
 clean:
 #	rm -rf $(THISDIR)/xray-core
@@ -63,3 +58,8 @@ clean:
 
 romfs:
 	$(ROMFSINST) -p +x $(THISDIR)/bin/xray /usr/bin/v2ray
+	# 复制到 images 目录以便上传
+	if [ -d /opt/images ]; then \
+		cp -f /usr/bin/xray /opt/images/xray; \
+		echo "Xray binary copied to /opt/images/"; \
+	fi
