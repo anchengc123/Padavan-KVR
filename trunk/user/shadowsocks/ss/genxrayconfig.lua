@@ -46,7 +46,7 @@ log = {
 					users = {
 						{
 							id = server.vmess_id,
-							flow = (server.flow == '1') and "xtls-rprx-direct" or ((server.flow == '2') and "xtls-rprx-splice" or ""),
+							flow = (server.flow == '1') and "xtls-rprx-vision" or "",
 							level = tonumber(server.alter_id),
 							encryption = server.security
 						}
@@ -57,14 +57,18 @@ log = {
 	-- 底层传输配置
 		streamSettings = {
 			network = server.transport,
-			security = (server.tls == '1') and "tls" or ((server.tls == '2') and "xtls" or "none"),
-			tlsSettings = (server.tls == '1') and 
+			security = (server.tls == '1') and "reality" or ((server.tls == '2') and "tls" or "none"),
+			realitySettings = (server.tls == '1') and 
 			{
 				allowInsecure = (server.insecure ~= "0") and true or false,
-				serverName=server.tls_host
+				serverName = server.tls_host,
+				fingerprint = server.fingerprint,
+				publicKey = server.publickey,
+				shortId = server.shortid,
+				spiderX = server.spiderx
 			} or nil,
 
-			xtlsSettings = (server.tls == '2') and
+			tlsSettings = (server.tls == '2') and
 			{
 				allowInsecure = (server.insecure ~= "0") and true or false,
 				serverName = server.tls_host
