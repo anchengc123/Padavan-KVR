@@ -63,7 +63,7 @@ find_bin() {
 			# 2. 如果没有 trojan 但有 xray，使用 xray
 			ret="/usr/bin/xray"
 		else
-			# 3. 都没有，回退到 trojan (导致后续启动报错)
+			# 3. 都没有，回退到 trojan
 			ret="/usr/bin/trojan"
 		fi
 		;;
@@ -252,7 +252,7 @@ start_redir_tcp() {
 			$bin -config $trojan_json_file >/dev/null 2>&1 &
 			echo "$(date "+%Y-%m-%d %H:%M:%S") $($bin --version 2>&1 | head -1) Started!" >>/tmp/ssrplus.log
 		else
-			# === 原版 Trojan 启动模式 (-c) ===
+			# === 原版 Trojan 启动模式 (--config) ===
 			for i in $(seq 1 $threads); do
 				$bin --config $trojan_json_file >>/tmp/ssrplus.log 2>&1 &
 				usleep 500000
@@ -307,7 +307,7 @@ start_redir_udp() {
 				# === Xray 启动模式 (-config) ===
 				$bin -config /tmp/trojan-ssr-reudp.json >/dev/null 2>&1 &
 			else
-				# === 原版 Trojan 启动模式 (-c) ===
+				# === 原版 Trojan 启动模式 (--config) ===
 				$bin --config /tmp/trojan-ssr-reudp.json >/dev/null 2>&1 &
 				ipt2socks -U -b 0.0.0.0 -4 -s 127.0.0.1 -p 10801 -l 1080 >/dev/null 2>&1 &
 			fi
@@ -432,7 +432,7 @@ start_local() {
 			$bin -config $trojan_json_file >/dev/null 2>&1 &
 			echo "$(date "+%Y-%m-%d %H:%M:%S") Global_Socks5:$($bin --version 2>&1 | head -1) Started!" >>/tmp/ssrplus.log
 		else
-			# === 原版 Trojan 启动模式 (-c) ===
+			# === 原版 Trojan 启动模式 (--config) ===
 			$bin --config /tmp/trojan-ssr-local.json >/dev/null 2>&1 &
 			echo "$(date "+%Y-%m-%d %H:%M:%S") Global_Socks5:$($bin --version 2>&1 | head -1) Started!" >>/tmp/ssrplus.log
 		fi
