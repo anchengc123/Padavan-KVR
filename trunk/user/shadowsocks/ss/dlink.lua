@@ -252,6 +252,10 @@ local function processData(szType, content)
 				result.tls = "1"
 				result.tls_host = params.host
 				result.insecure = 0
+				result.publickey = params.pbk
+				result.shortid = params.sid
+				result.spiderx = params.spx
+				result.fingerprint = params.fp or "chrome"
 				if params.flow == "xtls-rprx-vision" then
 					result.flow = "1"
 				else
@@ -261,10 +265,6 @@ local function processData(szType, content)
 				result.tls = "2"
 				result.tls_host = params.host
 				result.insecure = 0
-				result.publickey = params.pbk
-				result.shortid = params.sid
-				result.spiderx = params.spx
-				result.fingerprint = params.fp or "chrome"
 				if params.flow == "xtls-rprx-vision" then
 					result.flow = "1"
 				else
@@ -556,6 +556,7 @@ end
 		log('新增节点数量: ' .. add, '删除节点数量: ' .. del)
 		log('订阅更新成功')
 		end
+
 
 
 
