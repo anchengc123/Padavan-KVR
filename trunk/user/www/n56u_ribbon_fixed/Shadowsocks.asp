@@ -2431,7 +2431,7 @@
 															</td>
 														</tr>
 														<tr id="row_v2_reality_fingerprint" style="display:none;">
-    														<th>REALITY fingerpriint</th>
+    														<th>uTLS</th>
     														<td>
         														<input type="text" class="input" size="15"
 																	name="v2_reality_fingerprint" id="v2_reality_fingerprint"
@@ -2439,7 +2439,7 @@
     														</td>
 														</tr>
 														<tr id="row_v2_reality_shortid" style="display:none;">
-    														<th>REALITY ShortID</th>
+    														<th>Short ID</th>
     														<td>
         														<input type="text" class="input" size="15"
 																	name="v2_reality_shortid" id="v2_reality_shortid"
@@ -2447,7 +2447,7 @@
     														</td>
 														</tr>
 														<tr id="row_v2_reality_spiderx" style="display:none;">
-    														<th>REALITY SpiderX</th>
+    														<th>SpiderX</th>
     														<td>
         														<input type="text" class="input" size="15"
 																	name="v2_reality_spiderx" id="v2_reality_spiderx"
@@ -2455,7 +2455,7 @@
     														</td>
 														</tr>
 														<tr id="row_v2_reality_publickey" style="display:none;">
-    														<th>REALITY PublicKey</th>
+    														<th>PublicKey</th>
     														<td>
         														<input type="text" class="input" size="15"
 																	name="v2_reality_publickey" id="v2_reality_publickey"
