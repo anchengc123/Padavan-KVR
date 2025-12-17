@@ -264,12 +264,13 @@
 				showhide_div('row_v2_tls', 1);
 				showhide_div('row_v2_flow', 1);
 				showhide_div('row_v2_mux', 1);
-				showhide_div('row_tj_tls_host', 1);
+				//showhide_div('row_tj_tls_host', 1);
 				showhide_div('row_ssp_insecure', 1);
-				showhide_div('row_v2_reality_publickey', 1);
-   				showhide_div('row_v2_reality_shortid', 1);
-    			showhide_div('row_v2_reality_spiderx', 1);
-    			showhide_div('row_v2_reality_fingerprint', 1);
+				//showhide_div('row_v2_reality_publickey', 1);
+   				//showhide_div('row_v2_reality_shortid', 1);
+    			//showhide_div('row_v2_reality_spiderx', 1);
+    			//showhide_div('row_v2_reality_fingerprint', 1);
+				$j("#v2_tls").change();
 			} else if (b == "socks5") {
 				showhide_div('row_s5_enable', 1);
 				showhide_div('row_s5_username', 1);
