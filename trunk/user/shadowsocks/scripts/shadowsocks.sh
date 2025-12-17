@@ -55,7 +55,18 @@ find_bin() {
 			ret="/usr/bin/v2ray"
 		fi
 		;;
-	trojan) ret="/usr/bin/v2ray" ;;
+	trojan)
+		if [ -f "/usr/bin/trojan" ]; then
+			# 1. 优先使用原版 trojan
+			ret="/usr/bin/trojan"
+		elif [ -f "/usr/bin/v2ray" ]; then
+			# 2. 如果没有 trojan 但有 xray，使用 xray
+			ret="/usr/bin/xray"
+		else
+			# 3. 都没有，回退到 trojan (导致后续启动报错)
+			ret="/usr/bin/trojan"
+		fi
+		;;
 	socks5) ret="/usr/bin/ipt2socks" ;;
 	esac
 	echo $ret
@@ -80,7 +91,7 @@ local type=$stype
 		sed -i 's/\\//g' $config_file
 		;;
 	trojan)
-		tj_bin="/usr/bin/v2ray"
+		tj_bin=$(find_bin trojan)
 		if [ "$2" = "0" ]; then
 		lua /etc_ro/ss/gentrojanconfig.lua $1 nat 1080 >$trojan_json_file
 		sed -i 's/\\//g' $trojan_json_file
@@ -228,11 +239,18 @@ start_redir_tcp() {
 		echo "$(date "+%Y-%m-%d %H:%M:%S") Shadowsocks/ShadowsocksR $threads 线程启动成功!" >>/tmp/ssrplus.log
 		;;
 	trojan)
-		for i in $(seq 1 $threads); do
-			$bin -config $trojan_json_file >>/tmp/ssrplus.log 2>&1 &
-			usleep 500000
-		done
-		echo "$(date "+%Y-%m-%d %H:%M:%S") $($bin --version 2>&1 | head -1) Started!" >>/tmp/ssrplus.log
+		if [ "$bin" == "/usr/bin/v2ray" ]; then
+			# === Xray 启动模式 (-config) ===
+			$bin -config $trojan_json_file >/dev/null 2>&1 &
+			echo "$(date "+%Y-%m-%d %H:%M:%S") $($bin --version 2>&1 | head -1) Started!" >>/tmp/ssrplus.log
+		else
+			# === 原版 Trojan 启动模式 (-c) ===
+			for i in $(seq 1 $threads); do
+				$bin --config $trojan_json_file >>/tmp/ssrplus.log 2>&1 &
+				usleep 500000
+			done
+			echo "$(date "+%Y-%m-%d %H:%M:%S") $($bin --version 2>&1 | head -1) Started!" >>/tmp/ssrplus.log
+		fi
 		;;
 	v2ray)
 		$bin -config $v2_json_file >/dev/null 2>&1 &
@@ -277,8 +295,14 @@ start_redir_udp() {
 			;;	
 		trojan)
 			gen_config_file $UDP_RELAY_SERVER 1
-			$bin -config /tmp/trojan-ssr-reudp.json >/dev/null 2>&1 &
-			ipt2socks -U -b 0.0.0.0 -4 -s 127.0.0.1 -p 10801 -l 1080 >/dev/null 2>&1 &
+			if [ "$bin" == "/usr/bin/v2ray" ]; then
+				# === Xray 启动模式 (-config) ===
+				$bin -config /tmp/trojan-ssr-reudp.json >/dev/null 2>&1 &
+			else
+				# === 原版 Trojan 启动模式 (-c) ===
+				$bin --config /tmp/trojan-ssr-reudp.json >/dev/null 2>&1 &
+				ipt2socks -U -b 0.0.0.0 -4 -s 127.0.0.1 -p 10801 -l 1080 >/dev/null 2>&1 &
+			fi
 			;;
 		socks5)
 		echo "1"
@@ -395,8 +419,15 @@ start_local() {
 	trojan)
 		lua /etc_ro/ss/gentrojanconfig.lua $local_server client $s5_port >/tmp/trojan-ssr-local.json
 		sed -i 's/\\//g' /tmp/trojan-ssr-local.json
-		$bin -config /tmp/trojan-ssr-local.json >/dev/null 2>&1 &
-		echo "$(date "+%Y-%m-%d %H:%M:%S") Global_Socks5:$($bin --version 2>&1 | head -1) Started!" >>/tmp/ssrplus.log
+		if [ "$bin" == "/usr/bin/v2ray" ]; then
+			# === Xray 启动模式 (-config) ===
+			$bin -config $trojan_json_file >/dev/null 2>&1 &
+			echo "$(date "+%Y-%m-%d %H:%M:%S") Global_Socks5:$($bin --version 2>&1 | head -1) Started!" >>/tmp/ssrplus.log
+		else
+			# === 原版 Trojan 启动模式 (-c) ===
+			$bin --config /tmp/trojan-ssr-local.json >/dev/null 2>&1 &
+			echo "$(date "+%Y-%m-%d %H:%M:%S") Global_Socks5:$($bin --version 2>&1 | head -1) Started!" >>/tmp/ssrplus.log
+		fi
 		;;
 	*)
 		[ -e /proc/sys/net/ipv6 ] && local listenip='-i ::'
@@ -506,6 +537,12 @@ kill_process() {
 		logger -t "SS" "关闭V2Ray进程..."
 		killall v2ray >/dev/null 2>&1
 		kill -9 "$v2ray_process" >/dev/null 2>&1
+	fi
+	xray_process=$(pidof xray)
+	if [ -n "$xray_process" ]; then
+		logger -t "SS" "关闭xray进程..."
+		killall xray >/dev/null 2>&1
+		kill -9 "$xray_process" >/dev/null 2>&1
 	fi
 	ssredir=$(pidof ss-redir)
 	if [ -n "$ssredir" ]; then
