@@ -250,7 +250,7 @@ local function processData(szType, content)
 			end
 			if params.security == "reality" or params.security == "1" then --传输层security
 				result.tls = "1"
-				result.tls_host = params.host
+				result.tls_host = params.sni
 				result.insecure = 0
 				result.publickey = params.pbk
 				result.shortid = params.sid
@@ -263,7 +263,7 @@ local function processData(szType, content)
 				end
 			elseif params.security == "tls" or params.security == "2" then
 				result.tls = "2"
-				result.tls_host = params.host
+				result.tls_host = params.sni
 				result.insecure = 0
 				if params.flow == "xtls-rprx-vision" then
 					result.flow = "1"
@@ -556,6 +556,7 @@ end
 		log('新增节点数量: ' .. add, '删除节点数量: ' .. del)
 		log('订阅更新成功')
 		end
+
 
 
 
