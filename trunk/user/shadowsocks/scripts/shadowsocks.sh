@@ -93,10 +93,18 @@ local type=$stype
 	trojan)
 		tj_bin=$(find_bin trojan)
 		if [ "$2" = "0" ]; then
-		lua /etc_ro/ss/gentrojanconfig.lua $1 nat 1080 >$trojan_json_file
+			if [ -f "/usr/bin/v2ray" ]; then
+				lua /etc_ro/ss/gentrojanconfig.lua $1 nat 1080 xray >$trojan_json_file
+			else
+				lua /etc_ro/ss/gentrojanconfig.lua $1 nat 1080 trojan >$trojan_json_file
+			fi
 		sed -i 's/\\//g' $trojan_json_file
 		else
-		lua /etc_ro/ss/gentrojanconfig.lua $1 client 10801 >/tmp/trojan-ssr-reudp.json
+			if [ -f "/usr/bin/v2ray" ]; then
+				lua /etc_ro/ss/gentrojanconfig.lua $1 client 10801 xray >/tmp/trojan-ssr-reudp.json
+			else
+				lua /etc_ro/ss/gentrojanconfig.lua $1 client 10801 trojan >/tmp/trojan-ssr-reudp.json
+			fi
 		sed -i 's/\\//g' /tmp/trojan-ssr-reudp.json
 		fi
 		;;
