@@ -248,19 +248,27 @@ local function processData(szType, content)
 			if params.encryption then
 				result.security = params.encryption --vless security默认none
 			end
-			if params.security == "tls" or params.security == "1" then --传输层security
+			if params.security == "reality" or params.security == "1" then --传输层security
 				result.tls = "1"
 				result.tls_host = params.host
 				result.insecure = 0
-				result.flow = "0"
-			elseif params.security == "xtls" or params.security == "2" then
+				if params.flow == "xtls-rprx-vision" then
+					result.flow = "1"
+				else
+					result.flow = "0"
+				end
+			elseif params.security == "tls" or params.security == "2" then
 				result.tls = "2"
 				result.tls_host = params.host
 				result.insecure = 0
-				if params.flow == "xtls-rprx-splice" then
-					result.flow = "2"
-				else
+				result.publickey = params.pbk
+				result.shortid = params.sid
+				result.spiderx = params.spx
+				result.fingerprint = params.fp or "chrome"
+				if params.flow == "xtls-rprx-vision" then
 					result.flow = "1"
+				else
+					result.flow = "0"
 				end
 			else
 				result.tls = "0"
@@ -548,5 +556,6 @@ end
 		log('新增节点数量: ' .. add, '删除节点数量: ' .. del)
 		log('订阅更新成功')
 		end
+
 
 
