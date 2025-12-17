@@ -61,7 +61,7 @@ find_bin() {
 			ret="/usr/bin/trojan"
 		elif [ -f "/usr/bin/v2ray" ]; then
 			# 2. 如果没有 trojan 但有 xray，使用 xray
-			ret="/usr/bin/xray"
+			ret="/usr/bin/v2ray"
 		else
 			# 3. 都没有，回退到 trojan (导致后续启动报错)
 			ret="/usr/bin/trojan"
