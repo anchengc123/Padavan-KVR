@@ -59,9 +59,9 @@ find_bin() {
 		if [ -f "/usr/bin/trojan" ]; then
 			# 1. 优先使用原版 trojan
 			ret="/usr/bin/trojan"
-		elif [ -f "/usr/bin/v2ray" ]; then
+		elif [ -f "/usr/bin/xray" ]; then
 			# 2. 如果没有 trojan 但有 xray，使用 xray
-			ret="/usr/bin/v2ray"
+			ret="/usr/bin/xray"
 		else
 			# 3. 都没有，回退到 trojan (导致后续启动报错)
 			ret="/usr/bin/trojan"
@@ -93,14 +93,14 @@ local type=$stype
 	trojan)
 		tj_bin=$(find_bin trojan)
 		if [ "$2" = "0" ]; then
-			if [ -f "/usr/bin/v2ray" ]; then
+			if [ -f "/usr/bin/xray" ]; then
 				lua /etc_ro/ss/gentrojanconfig.lua $1 nat 1080 xray >$trojan_json_file
 			else
 				lua /etc_ro/ss/gentrojanconfig.lua $1 nat 1080 trojan >$trojan_json_file
 			fi
 		sed -i 's/\\//g' $trojan_json_file
 		else
-			if [ -f "/usr/bin/v2ray" ]; then
+			if [ -f "/usr/bin/xray" ]; then
 				lua /etc_ro/ss/gentrojanconfig.lua $1 client 10801 xray >/tmp/trojan-ssr-reudp.json
 			else
 				lua /etc_ro/ss/gentrojanconfig.lua $1 client 10801 trojan >/tmp/trojan-ssr-reudp.json
@@ -109,7 +109,7 @@ local type=$stype
 		fi
 		;;
 	v2ray)
-		v2_bin="/usr/bin/v2ray"
+		v2_bin="/usr/bin/xray"
 		v2ray_enable=1
 		if [ "$2" = "1" ]; then
 		lua /etc_ro/ss/genv2config.lua $1 udp 1080 >/tmp/v2-ssr-reudp.json
@@ -120,7 +120,7 @@ local type=$stype
 		fi
 		;;
 	xray)
-		v2_bin="/usr/bin/v2ray"
+		v2_bin="/usr/bin/xray"
 		v2ray_enable=1
 		if [ "$2" = "1" ]; then
 		lua /etc_ro/ss/genxrayconfig.lua $1 udp 1080 >/tmp/v2-ssr-reudp.json
@@ -247,7 +247,7 @@ start_redir_tcp() {
 		echo "$(date "+%Y-%m-%d %H:%M:%S") Shadowsocks/ShadowsocksR $threads 线程启动成功!" >>/tmp/ssrplus.log
 		;;
 	trojan)
-		if [ "$bin" == "/usr/bin/v2ray" ]; then
+		if [ "$bin" == "/usr/bin/xray" ]; then
 			# === Xray 启动模式 (-config) ===
 			$bin -config $trojan_json_file >/dev/null 2>&1 &
 			echo "$(date "+%Y-%m-%d %H:%M:%S") $($bin --version 2>&1 | head -1) Started!" >>/tmp/ssrplus.log
@@ -303,7 +303,7 @@ start_redir_udp() {
 			;;	
 		trojan)
 			gen_config_file $UDP_RELAY_SERVER 1
-			if [ "$bin" == "/usr/bin/v2ray" ]; then
+			if [ "$bin" == "/usr/bin/xray" ]; then
 				# === Xray 启动模式 (-config) ===
 				$bin -config /tmp/trojan-ssr-reudp.json >/dev/null 2>&1 &
 			else
@@ -427,7 +427,7 @@ start_local() {
 	trojan)
 		lua /etc_ro/ss/gentrojanconfig.lua $local_server client $s5_port >/tmp/trojan-ssr-local.json
 		sed -i 's/\\//g' /tmp/trojan-ssr-local.json
-		if [ "$bin" == "/usr/bin/v2ray" ]; then
+		if [ "$bin" == "/usr/bin/xray" ]; then
 			# === Xray 启动模式 (-config) ===
 			$bin -config $trojan_json_file >/dev/null 2>&1 &
 			echo "$(date "+%Y-%m-%d %H:%M:%S") Global_Socks5:$($bin --version 2>&1 | head -1) Started!" >>/tmp/ssrplus.log
