@@ -2,33 +2,19 @@ local cjson = require "cjson"
 local server_section = arg[1]
 local proto = arg[2]
 local local_port = arg[3] or "0"
+local mode = arg[4] or "trojan" -- 默认为 trojan 模式
 
--- 辅助函数：检测文件是否存在
-function file_exists(name)
-   local f = io.open(name, "r")
-   if f ~= nil then io.close(f) return true else return false end
-end
+
 
 -- 获取数据库中的节点配置
 local ssrindext = io.popen("dbus get ssconf_basic_json_" .. server_section)
 local servertmp = ssrindext:read("*all")
 local server = cjson.decode(servertmp)
 
--- 逻辑判断核心
--- 1. 优先检测 /usr/bin/trojan
--- 2. 其次检测 /usr/bin/xray
--- 3. 都没有，默认为 trojan 模式 (Scenario 3)
-local use_xray = false
-if file_exists("/usr/bin/trojan") then
-    use_xray = false
-elseif file_exists("/usr/bin/xray") then
-    use_xray = true
-else
-    use_xray = false -- 默认回退到原版逻辑
-end
+
 
 -- 构建配置结构
-if use_xray then
+if mode == "xray" then
     -- ============================================================
     -- 模式 A: 生成 Xray 格式配置 (因为检测到了 xray 且没有 trojan)
     -- ============================================================
@@ -122,5 +108,6 @@ else
 end
 -- 输出 JSON
 print(cjson.encode(trojan))
+
 
 
