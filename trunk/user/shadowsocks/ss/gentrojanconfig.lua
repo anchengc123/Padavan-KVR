@@ -62,12 +62,10 @@ if use_xray then
                         address = server.server,
                         port = tonumber(server.server_port),
                         password = server.password,
-                        email = "t@t.tt" -- 随意填写，Xray中Trojan不强校验这个
                     }
                 }
             },
             streamSettings = {
-                network = "tcp", -- Trojan 协议强制基于 TCP
                 security = "tls", -- Trojan 协议强制 TLS
                 tlsSettings = {
                     -- 注意逻辑：原配置 insecure="1" 代表不安全(不验证)，对应 Xray 的 allowInsecure=true
@@ -83,7 +81,6 @@ if use_xray then
             {
                 protocol = "freedom",
                 tag = "direct",
-                settings = { keep = "" }
             }
         }
     }
@@ -125,4 +122,5 @@ else
 end
 -- 输出 JSON
 print(cjson.encode(trojan))
+
 
